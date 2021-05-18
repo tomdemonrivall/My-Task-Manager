@@ -22,9 +22,20 @@ time();
 // [x] 4.1 ask for input
 // [x] 4.2 replace [ ] by [x]
 // [x] 5.0 end the function
-// [x] 6.0 print "command not found" an rerun
+// [x] 6.0 print "command not found"
 
-let taskarr = [];
+// [x] X.0 Bonus saving task when exit
+// [x] X.1 Creating a Json File
+// [x] X.2 Looking if previous task when start
+// [x] X.3 Adding the task array to the Json File
+// [x] X.5 Sorting the string in an array
+
+const fs = require("fs");
+var tasks = fs.readFileSync("tasks.json");
+var taskarr = JSON.parse(tasks);
+console.log(taskarr);
+console.log(`You have ${taskarr.length} previous task.`);
+
 const taskman = () => {
   console.log(`
 
@@ -34,7 +45,7 @@ const taskman = () => {
     2. to add a task
     3. to delete a task
     4. to mark a task as done
-    5. to Exit the task manager"
+    5. to Save and Exit the task manager"
 
   `);
 
@@ -53,8 +64,10 @@ const taskman = () => {
     taskman();
   } else if (choice == 2) {
     taskarr.length = taskarr.length;
-    let newtask = integers(`What is the new task: `);
-    taskarr.push(`"[] ${newtask}"`);
+    let temptask = integers(`What is the new task: `);
+    let newtask = `"[] ${temptask}"`;
+    console.log(newtask);
+    taskarr.push(newtask);
     for (i = 0; i < taskarr.length; i++) {
       console.log(`(${i + 1}) -  ${taskarr[i]}`);
     }
@@ -87,7 +100,14 @@ const taskman = () => {
     }
     taskman();
   } else if (choice == 5) {
-    console.log("Thank you for using the task manager, bye bye.");
+    // Writing to our JSON file
+    var savedtask = JSON.stringify(taskarr);
+    fs.writeFile("tasks.json", savedtask, (err) => {
+      // Error checking
+      if (err) throw err;
+      console.log("New data added");
+    });
+    console.log("Tasks saved, thank you for using the task manager, bye bye.");
   } else {
     console.log(`
       Error command not found, exiting program, auto destructin initialized`);
