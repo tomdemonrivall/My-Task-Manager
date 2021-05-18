@@ -1,3 +1,3 @@
 # My-Task-Manager
 
-Great but amnesic for now
+No longer amnesic, yeah
